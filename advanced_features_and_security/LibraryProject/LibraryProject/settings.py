@@ -128,6 +128,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CustomUser Model
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = '.CustomUser'
 # REDIRECT AFTER LOGOUT 
 
