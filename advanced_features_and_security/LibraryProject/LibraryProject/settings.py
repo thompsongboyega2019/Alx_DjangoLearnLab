@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf', 
     'relationship_app' 
+    'csp'
 ]
 
 MIDDLEWARE = [
@@ -131,3 +132,45 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
 # REDIRECT AFTER LOGOUT 
 
+
+# DO NOT keep DEBUG=True in production
+DEBUG = False
+
+# Prevent clickjacking
+X_FRAME_OPTIONS = 'DENY'
+
+# Enable the browser’s XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent the browser from guessing content types
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# CSRF and session cookies should only be sent over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
+# Protect against XSS and content type guessing
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+
+# Optional but recommended
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Optional: Enable HTTPS redirect
+SECURE_SSL_REDIRECT = True
+
+# Ensure allowed hosts is set
+ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1', 'localhost']
+
+MIDDLEWARE.insert(0, 'csp.middleware.CSPMiddleware')
+
+# Example CSP configuration:
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'cdn.jsdelivr.net')
+CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
+CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
+CSP_IMG_SRC = ("'self'", 'data:')
