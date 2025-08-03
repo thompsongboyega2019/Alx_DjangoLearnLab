@@ -1,12 +1,9 @@
 # bookshelf/views.py
-from django.shortcuts import render
-from .models import Book
-from django.db.models import Q
-from django import forms
 
-# Use a form to validate inputs
-class SearchForm(forms.Form):
-    query = forms.CharField(required=True, max_length=100)
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Book
+from .forms import SearchForm  # ✅ Correct import
 
 def book_search(request):
     form = SearchForm(request.GET)
