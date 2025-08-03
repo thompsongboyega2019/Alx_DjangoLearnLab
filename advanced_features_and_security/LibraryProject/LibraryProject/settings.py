@@ -174,3 +174,28 @@ CSP_SCRIPT_SRC = ("'self'", 'cdn.jsdelivr.net')
 CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
 CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
 CSP_IMG_SRC = ("'self'", 'data:')
+
+
+# ============================
+# HTTPS AND HSTS CONFIGURATION
+# ============================
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True  # 🔒 Redirects all non-HTTPS requests to HTTPS
+
+# HTTP Strict Transport Security: tells browsers to only use HTTPS for the next year
+SECURE_HSTS_SECONDS = 31536000  # 🔒 Enforce HTTPS for 1 year (recommended minimum for production)
+
+# Apply HSTS to all subdomains
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # 🔒 Includes subdomains in HSTS policy
+
+# Enable preload flag (used by browsers for HSTS preload list)
+SECURE_HSTS_PRELOAD = True  # 🔒 Allows HSTS to be preloaded by browsers
+
+
+# ============================
+# SECURE COOKIE CONFIGURATION
+# ============================
+
+
+
