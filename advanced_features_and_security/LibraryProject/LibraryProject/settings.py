@@ -199,3 +199,4 @@ SECURE_HSTS_PRELOAD = True  # 🔒 Allows HSTS to be preloaded by browsers
 
 
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
