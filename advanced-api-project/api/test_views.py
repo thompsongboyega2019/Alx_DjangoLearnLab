@@ -18,7 +18,7 @@ class BookAPITestCase(APITestCase):
         self.list_url = reverse('book-list')
 
     def test_create_book_authenticated(self):
-        self.client.force_authenticate(user=self.user)
+        self.client.login(username='testuser', password='testpass')
         data = {'title': 'Book Three', 'author': 'Author C', 'published_date': '2022-01-01', 'price': 15.99}
         response = self.client.post(self.list_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -42,7 +42,7 @@ class BookAPITestCase(APITestCase):
         self.assertEqual(response.data['title'], self.book1.title)
 
     def test_update_book(self):
-        self.client.force_authenticate(user=self.user)
+        self.client.login(username='testuser', password='testpass')
         url = reverse('book-detail', args=[self.book1.id])
         data = {'title': 'Book One Updated', 'author': 'Author A', 'published_date': '2020-01-01', 'price': 11.99}
         response = self.client.put(url, data, format='json')
@@ -51,7 +51,7 @@ class BookAPITestCase(APITestCase):
         self.assertEqual(self.book1.title, 'Book One Updated')
 
     def test_delete_book(self):
-        self.client.force_authenticate(user=self.user)
+        self.client.login(username='testuser', password='testpass')
         url = reverse('book-detail', args=[self.book2.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
