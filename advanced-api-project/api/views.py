@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters import rest_framework
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework import filters
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from .models import Author, Book
@@ -60,8 +60,8 @@ class BookListView(generics.ListAPIView):
     # Configure the three filter backends
     filter_backends = [
         DjangoFilterBackend,  # For field-based filtering
-        SearchFilter,         # For text-based searching
-        OrderingFilter,       # For ordering/sorting
+        filters.SearchFilter,         # For text-based searching
+        filters.OrderingFilter,       # For ordering/sorting
     ]
     
     # Configure filtering using our custom FilterSet
