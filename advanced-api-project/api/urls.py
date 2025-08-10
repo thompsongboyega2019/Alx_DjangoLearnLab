@@ -3,16 +3,13 @@
 from django.urls import path, include
 from . import views
 
-# Define API version
-API_VERSION = 'v1'
-
 urlpatterns = [
-    # Book CRUD endpoints
+    # Book CRUD endpoints - ALX required format
     path('books/', views.BookListView.as_view(), name='book-list'),
     path('books/<int:pk>/', views.BookDetailView.as_view(), name='book-detail'),
     path('books/create/', views.BookCreateView.as_view(), name='book-create'),
-    path('books/<int:pk>/update/', views.BookUpdateView.as_view(), name='book-update'),
-    path('books/<int:pk>/delete/', views.BookDeleteView.as_view(), name='book-delete'),
+    path('books/update/<int:pk>/', views.BookUpdateView.as_view(), name='book-update'),
+    path('books/delete/<int:pk>/', views.BookDeleteView.as_view(), name='book-delete'),
     
     # Author CRUD endpoints
     path('authors/', views.AuthorListView.as_view(), name='author-list'),
@@ -24,7 +21,5 @@ urlpatterns = [
     path('authors/stats/', views.author_statistics, name='author-stats'),
 ]
 
-# Add API versioning (optional but recommended)
-versioned_urlpatterns = [
-    path(f'{API_VERSION}/', include(urlpatterns)),
-]
+# Note: If you want API versioning, add this to your main urls.py:
+# path('api/v1/', include('api.urls'))
