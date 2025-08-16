@@ -1,3 +1,5 @@
+from .views import PostByTagListView
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='post-by-tag'),
     path('tags/<str:tag_name>/', views.posts_by_tag, name='post-by-tag'),
     path('search/', views.post_search, name='post-search'),
     # Comment CRUD

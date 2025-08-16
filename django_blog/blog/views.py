@@ -1,3 +1,14 @@
+from django.views.generic import ListView
+# List posts by tag slug for ALX checker
+from taggit.models import Tag
+class PostByTagListView(ListView):
+	model = Post
+	template_name = 'blog/post_list.html'
+	context_object_name = 'posts'
+
+	def get_queryset(self):
+		tag_slug = self.kwargs.get('tag_slug')
+		return Post.objects.filter(tags__slug=tag_slug)
 from taggit.models import Tag
 from django.db.models import Q
 # View posts by tag
