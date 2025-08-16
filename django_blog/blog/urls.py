@@ -1,3 +1,5 @@
+    path('tags/<str:tag_name>/', views.posts_by_tag, name='post-by-tag'),
+    path('search/', views.post_search, name='post-search'),
     # Comment CRUD
     path('post/<int:pk>/comments/new/', views.CommentCreateView.as_view(), name='comment-create'),
     path('comment/<int:pk>/update/', views.CommentUpdateView.as_view(), name='comment-update'),

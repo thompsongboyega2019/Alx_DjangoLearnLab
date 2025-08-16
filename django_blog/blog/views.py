@@ -1,3 +1,23 @@
+from taggit.models import Tag
+from django.db.models import Q
+# View posts by tag
+def posts_by_tag(request, tag_name):
+	tag = Tag.objects.get(name=tag_name)
+	posts = tag.taggit_taggeditem_items.select_related('content_object').all()
+	posts = [item.content_object for item in posts]
+	return render(request, 'blog/post_list.html', {'posts': posts, 'tag': tag})
+
+# Search posts
+def post_search(request):
+	query = request.GET.get('q', '')
+	posts = []
+	if query:
+		posts = Post.objects.filter(
+			Q(title__icontains=query) |
+			Q(content__icontains=query) |
+			Q(tags__name__icontains=query)
+		).distinct()
+	return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
 from .models import Comment
 from .forms import CommentForm
 from django.urls import reverse, reverse_lazy
