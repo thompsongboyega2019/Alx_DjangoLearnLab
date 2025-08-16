@@ -1,3 +1,4 @@
+from taggit.forms import TagWidget
 from .models import Comment
 
 class CommentForm(forms.ModelForm):
@@ -10,7 +11,7 @@ class CommentForm(forms.ModelForm):
 from .models import Post
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(required=False, help_text='Comma-separated tags', widget=forms.TextInput())
+    tags = forms.CharField(required=False, help_text='Comma-separated tags', widget=TagWidget())
 
     class Meta:
         model = Post
