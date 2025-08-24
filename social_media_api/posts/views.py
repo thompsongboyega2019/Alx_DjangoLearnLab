@@ -2,12 +2,15 @@ from rest_framework import viewsets, permissions, filters
 from .models import Post, Comment, Like
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
+
+from rest_framework import generics
+
 class LikePostView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
-        like, created = Like.objects.get_or_create(post=post, user=request.user)
+        post = generics.get_object_or_404(Post, pk=pk)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
         if not created:
             return Response({'detail': 'You have already liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
         # Create notification for post author
@@ -25,9 +28,9 @@ class UnlikePostView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         try:
-            like = Like.objects.get(post=post, user=request.user)
+            like = Like.objects.get(user=request.user, post=post)
             like.delete()
             return Response({'detail': 'Post unliked.'})
         except Like.DoesNotExist:
