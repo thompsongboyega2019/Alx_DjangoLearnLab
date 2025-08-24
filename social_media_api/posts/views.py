@@ -1,5 +1,37 @@
 from rest_framework import viewsets, permissions, filters
-from .models import Post, Comment
+from .models import Post, Comment, Like
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
+class LikePostView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        like, created = Like.objects.get_or_create(post=post, user=request.user)
+        if not created:
+            return Response({'detail': 'You have already liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+        # Create notification for post author
+        if post.author != request.user:
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb='liked your post',
+                target_object_id=post.id,
+                target_content_type=ContentType.objects.get_for_model(Post)
+            )
+        return Response({'detail': 'Post liked.'})
+
+class UnlikePostView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        try:
+            like = Like.objects.get(post=post, user=request.user)
+            like.delete()
+            return Response({'detail': 'Post unliked.'})
+        except Like.DoesNotExist:
+            return Response({'detail': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
 from .serializers import PostSerializer, CommentSerializer
 
 from rest_framework.views import APIView
